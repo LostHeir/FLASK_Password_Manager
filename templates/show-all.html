@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All passwords</title>
+</head>
+<body>
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>site name</th>
+                <th>URL</th>
+                <th>login</th>
+                <th>password</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in all_passwords %}
+            <tr>
+                <td>{{item.site_name}}</td>
+                <td>{{item.site_url}}</td>
+                <td>{{item.login}}</td>
+                <td>{{item.password}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+
+</body>
+</html>
