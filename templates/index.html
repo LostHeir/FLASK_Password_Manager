@@ -5,6 +5,12 @@
     <title>Homepage</title>
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <form action="{{ url_for('get_all_passwords') }}" method="get">
+        <label for="login_main">Login:</label><br>
+        <input type="text" id="login_main" name="login_main" placeholder="example user" size="30" required><br>
+        <label for="password_main">Password:</label><br>
+        <input type="text" id="password_main" name="password_main" placeholder="GreatPassword2*" size="30" required><br><br>
+        <input type="submit" value="Login" formnovalidate>
+    </form>
 </body>
 </html>

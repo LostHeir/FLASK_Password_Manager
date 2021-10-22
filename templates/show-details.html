@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+</head>
+<body>
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>site name</th>
+                <th>URL</th>
+                <th>login</th>
+                <th>password</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{data.site_name}}</td>
+                <td><a href="{{data.site_url}}" target="_blank" rel="noopener noreferrer">{{data.site_url}}</a></td>
+<!--                Link will open in new tab/browser, it depends on user's browser settings.-->
+<!--                Alternatevely JS 'onclick' command can be used-->
+                <td>{{data.login}}</td>
+                <td>{{data.password}}</td>
+            </tr>
+        </tbody>
+    </table><br>
+    <form>
+         <button type="submit" formaction="{{url_for('edit_entry', password_id=data.id)}}">Edit</button>
+        <button type="submit" formaction="{{url_for('get_all_passwords')}}">Back</button>
+    </form>
+
+</body>
+</html>

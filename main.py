@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -26,15 +26,16 @@ class Password(db.Model):
 # db.create_all()
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
+    if request.method == "POST":
+        redirect(url_for("get_all_passwords"))
     return render_template("index.html")
 
 
 @app.route('/show_all')
 def get_all_passwords():
     passwords = Password.query.all()
-    print(passwords[0].login)
     return render_template("show-all.html", all_passwords=passwords)
 
 
@@ -50,20 +51,37 @@ def add_new_entry():
         )
         db.session.add(new_password)
         db.session.commit()
-        return redirect(url_for("home"))
+        return redirect(url_for("get_all_passwords"))
     return render_template("add-password.html")
 
 
-@app.route("/edit_password/<int:password_id>", methods=["GET", "POST"])
-def edit_entry():
+@app.route("/show_details/<int:password_id>")
+def show_details(password_id):
+    password_to_show = Password.query.get(password_id)
+    return render_template("show-details.html", data=password_to_show)
+
+
+@app.route("/edit/<int:password_id>", methods=["GET", "POST"])
+def edit_entry(password_id):
+    password_to_edit = Password.query.get(password_id)
     if request.method == "POST":
-        return redirect(url_for("home"))
-    return redirect(url_for("home"))
+        data = request.form
+        edit_password = Password.query.get(password_id)
+        edit_password.site_name = data["site"]
+        edit_password.site_url = data["site_url"]
+        edit_password.login = data["login"]
+        edit_password.login = data["password"]
+        db.session.commit()
+        return redirect(url_for("get_all_passwords"))
+    return render_template("edit-password.html", data=password_to_edit)
 
 
-@app.route("/delete_password/<int:password_id>")
-def edit_entry():
-    return redirect(url_for("home"))
+@app.route("/delete/<int:password_id>")
+def delete_entry(password_id):
+    password_to_delete = Password.query.get(password_id)
+    db.session.delete(password_to_delete)
+    db.session.commit()
+    return redirect(url_for('get_all_passwords'))
 
 
 if __name__ == "__main__":

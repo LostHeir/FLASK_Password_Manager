@@ -5,27 +5,27 @@
     <title>All passwords</title>
 </head>
 <body>
-
     <table border="1" cellpadding="10">
         <thead>
             <tr>
                 <th>site name</th>
-                <th>URL</th>
                 <th>login</th>
-                <th>password</th>
             </tr>
         </thead>
         <tbody>
             {% for item in all_passwords %}
             <tr>
-                <td>{{item.site_name}}</td>
-                <td>{{item.site_url}}</td>
+                <td><a href="{{url_for('show_details', password_id=item.id) }}">{{item.site_name}}</a></td>
                 <td>{{item.login}}</td>
-                <td>{{item.password}}</td>
+                <td><a href="{{url_for('delete_entry', password_id=item.id) }}">✘</a></td>
             </tr>
+
             {% endfor %}
         </tbody>
-</table>
-
+    </table><br>
+    <form>
+         <button type="submit" formaction="{{url_for('add_new_entry')}}">Add new password</button>
+        <button type="submit" formaction="{{url_for('home')}}">Log out</button>
+    </form>
 </body>
 </html>
