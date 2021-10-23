@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+import functools
+from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
 from sqlalchemy.orm import relationship
@@ -47,6 +48,20 @@ def verify_auth_token(token):
     except:
         return False
 
+
+# DECORATORS
+def login_required(func):
+    @functools.wraps(func)
+    def decorated_function(*args, **kwargs):
+        if current_user.is_anonymous or current_user.id != 1:
+            print(current_user.is_anonymous, "in@T")
+            return abort(403)
+        else:
+            print(current_user.is_anonymous, "in@F")
+            return func(*args, **kwargs)
+    return decorated_function
+
+
 # CREATE TABLE
 class PmUser(UserMixin, db.Model):
     __tablename__ = "pm_users"
@@ -80,6 +95,7 @@ class Password(db.Model):
 # ROUTES
 @app.route("/", methods=["GET", "POST"])
 def home():
+    print(current_user.is_anonymous)
     logout_user()  # for hardcoded user - if user don't click Login button he will be treated like anonymous one.
     if request.method == "POST":
         selected_user = PmUser.query.filter_by(id=1).first()
@@ -90,12 +106,14 @@ def home():
 
 
 @app.route('/show_all')
+@login_required
 def get_all_passwords():
     passwords = Password.query.all()
     return render_template("show-all.html", all_passwords=passwords)
 
 
 @app.route("/add", methods=["GET", "POST"])
+@login_required
 def add_new_entry():
     if request.method == "POST":
         data = request.form
@@ -123,17 +141,24 @@ def share_entry(token, password_id):
         return redirect(url_for("home"))
 
 
-@app.route("/show_details/<int:password_id>", methods=["GET", "POST"])
-def show_details(password_id):
+@app.route("/show_details/<token>/<int:password_id>/<show_link>", methods=["GET", "POST"])
+@app.route("/show_details/<int:password_id>", defaults={'show_link': None, 'token': 'nulltoken'})
+@login_required
+def show_details(token, password_id, show_link):
     if request.method == "POST":
         token = generate_auth_token()
-        return redirect(url_for("share_entry", token=token, password_id=password_id))
+        entry_to_show = Password.query.get(password_id)
+        password_to_show = fernet.decrypt(entry_to_show.password).decode()
+        show_link = bool(show_link)
+        return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token,
+                               show_link=show_link)
     entry_to_show = Password.query.get(password_id)
     password_to_show = fernet.decrypt(entry_to_show.password).decode()
-    return render_template("show-details.html", data=entry_to_show, password=password_to_show)
+    return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token)
 
 
 @app.route("/edit/<int:password_id>", methods=["GET", "POST"])
+@login_required
 def edit_entry(password_id):
     password_to_edit = Password.query.get(password_id)
     # Decrypt password to change it
@@ -154,6 +179,7 @@ def edit_entry(password_id):
 
 
 @app.route("/delete/<int:password_id>")
+@login_required
 def delete_entry(password_id):
     password_to_delete = Password.query.get(password_id)
     db.session.delete(password_to_delete)
