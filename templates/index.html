@@ -5,7 +5,7 @@
     <title>Homepage</title>
 </head>
 <body>
-    <form action="{{ url_for('get_all_passwords') }}" method="get">
+    <form method="post">
         <label for="login_main">Login:</label><br>
         <input type="text" id="login_main" name="login_main" placeholder="example user" size="30" required><br>
         <label for="password_main">Password:</label><br>
