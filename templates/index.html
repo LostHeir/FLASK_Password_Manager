@@ -5,6 +5,17 @@
     <title>Homepage</title>
 </head>
 <body>
+
+    {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div>
+                {% for message in messages %}
+                   {{ message }}
+                {% endfor %}
+                </div>
+            {% endif %}
+    {% endwith %}
+
     <form method="post">
         <label for="login_main">Login:</label><br>
         <input type="text" id="login_main" name="login_main" placeholder="example user" size="30" required><br>
@@ -12,5 +23,6 @@
         <input type="text" id="password_main" name="password_main" placeholder="GreatPassword2*" size="30" required><br><br>
         <input type="submit" value="Login" formnovalidate>
     </form>
+
 </body>
 </html>
