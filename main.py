@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
 from sqlalchemy.orm import relationship
 from cryptography.fernet import Fernet
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 # I will be using Fernet to encrypt and decrypt password stored in database.
@@ -29,6 +30,22 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///passwords.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+
+def generate_auth_token():
+    s = Serializer(app.config['SECRET_KEY'], expires_in=10)
+
+    token = s.dumps({"id": "2"})
+
+    return token
+
+
+def verify_auth_token(token):
+    s = Serializer(app.config['SECRET_KEY'])
+    try:
+        s.loads(token)
+        return True
+    except:
+        return False
 
 # CREATE TABLE
 class PmUser(UserMixin, db.Model):
@@ -95,8 +112,22 @@ def add_new_entry():
     return render_template("add-password.html")
 
 
-@app.route("/show_details/<int:password_id>")
+@app.route('/share_entry/<token>/<int:password_id>')
+def share_entry(token, password_id):
+    if verify_auth_token(token):
+        entry_to_show = Password.query.get(password_id)
+        password_to_show = fernet.decrypt(entry_to_show.password).decode()
+        return render_template("share-password.html", data=entry_to_show, password=password_to_show)
+    else:
+        flash("temp")
+        return redirect(url_for("home"))
+
+
+@app.route("/show_details/<int:password_id>", methods=["GET", "POST"])
 def show_details(password_id):
+    if request.method == "POST":
+        token = generate_auth_token()
+        return redirect(url_for("share_entry", token=token, password_id=password_id))
     entry_to_show = Password.query.get(password_id)
     password_to_show = fernet.decrypt(entry_to_show.password).decode()
     return render_template("show-details.html", data=entry_to_show, password=password_to_show)
