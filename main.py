@@ -173,8 +173,8 @@ def show_details(token, password_id, show_link):
     """
     if request.method == "POST":
         token = generate_auth_token()
-        entry_to_show = Password.query.get(password_id).decode()
-        password_to_show = fernet.decrypt(entry_to_show.password)
+        entry_to_show = Password.query.get(password_id)
+        password_to_show = fernet.decrypt(entry_to_show.password).decode()
         show_link = bool(show_link)
         return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token,
                                show_link=show_link)
