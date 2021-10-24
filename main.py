@@ -29,7 +29,7 @@ def load_user(user_id):
 
 
 # CREATE DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('POSTGRESQL_DATABASE_URL', 'sqlite:///blog.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('POSTGRESQL_DATABASE_URL', 'sqlite:///passwords.db')
 # PostgreSQL DB on Heroku, alternatively use sqllite DB for local development
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
@@ -103,8 +103,13 @@ def home():
     """Home page with login form. Data in login form doesn't matter, there is only one hardcoded user in DB."""
     logout_user()  # for hardcoded user - if user don't click Login button he will be treated like anonymous one.
     if request.method == "POST":
-        selected_user = PmUser.query.filter_by(id=1).first()
-        login_user(selected_user)
+        try:  # Try to log in.
+            selected_user = PmUser.query.filter_by(id=1).first()
+            login_user(selected_user)
+        except:  # If there is no user, create one.
+            new_user = PmUser(name="User1", password="GreatPassword2*")
+            db.session.add(new_user)
+            db.session.commit()
         passwords = Password.query.all()
         return render_template("show-all.html", all_passwords=passwords)
     return render_template("index.html")
