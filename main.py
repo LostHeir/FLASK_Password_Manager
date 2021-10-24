@@ -180,8 +180,8 @@ def show_details(token, password_id, show_link):
         return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token,
                                show_link=show_link)
     entry_to_show = Password.query.get(password_id)
-    print(type(entry_to_show.password))
-    password_to_show = fernet.decrypt(entry_to_show.password).decode()
+    pass_to_dec = entry_to_show.password.encode()
+    password_to_show = fernet.decrypt(pass_to_dec).decode()
     return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token)
 
 
