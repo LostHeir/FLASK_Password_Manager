@@ -29,7 +29,8 @@ def load_user(user_id):
 
 
 # CREATE DB
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///passwords.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('POSTGRESQL_DATABASE_URL', 'sqlite:///blog.db')
+# PostgreSQL DB on Heroku, alternatively use sqllite DB for local development
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
