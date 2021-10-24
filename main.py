@@ -149,7 +149,7 @@ def add_new_entry():
 
 @app.route('/share_entry/<token>/<int:password_id>')
 def share_entry(token, password_id):
-    """Displays shared entry details. After expire time redirect user to the home page with notification about this."""
+    """Displays shared entry details. After time expires redirect user to the home page with notification about this."""
     if verify_auth_token(token):
         entry_to_show = Password.query.get(password_id)
         password_to_show = fernet.decrypt(entry_to_show.password).decode()
@@ -174,14 +174,14 @@ def show_details(token, password_id, show_link):
     """
     if request.method == "POST":
         token = generate_auth_token()
-        entry_to_show = Password.query.get(password_id)
-        password_to_show = fernet.decrypt(entry_to_show.password).decode()
+        entry_to_show = Password.query.get(password_id).decode()
+        password_to_show = fernet.decrypt(entry_to_show.password)
         show_link = bool(show_link)
         return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token,
                                show_link=show_link)
     entry_to_show = Password.query.get(password_id)
+    print(type(entry_to_show.password))
     password_to_show = fernet.decrypt(entry_to_show.password).decode()
-    token = token.encode()
     return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token)
 
 
