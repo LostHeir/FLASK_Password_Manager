@@ -93,6 +93,7 @@ class Password(db.Model):
     # Create foreign key to identify author
     author_id = db.Column(db.Integer, db.ForeignKey("pm_users.id"))
 
+
 # Run only once to create data base
 db.create_all()
 
@@ -180,6 +181,7 @@ def show_details(token, password_id, show_link):
                                show_link=show_link)
     entry_to_show = Password.query.get(password_id)
     password_to_show = fernet.decrypt(entry_to_show.password).decode()
+    token = token.encode()
     return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token)
 
 
