@@ -55,13 +55,13 @@ You can use the IDE or Terminal to build this project. Below I present the instr
 
 Actuall verion is in _share_link_ branch!
 
-1.Clone the repository.
-2.Unzip project.
-3.Go to the folder where you unpacked this project.
-4.Run: pip install -r requirements.txt in your shell.
-5.Run: main.py
-6.Go to Your local host link. (For me it's 127.0.0.1 with port 5000).
-7.Play around.
+1. Clone the repository.
+2. Unzip project.
+3. Go to the folder where you unpacked this project.
+4. Run: pip install -r requirements.txt in your shell.
+5. Run: main.py
+6. Go to Your local host link. (For me it's 127.0.0.1 with port 5000).
+7. Play around.
 
 ## Ideas for further development
 * Add multi-user functionality.
