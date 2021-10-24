@@ -27,14 +27,17 @@
             </tr>
         </tbody>
     </table><br>
+
     <form>
          <button type="submit" formaction="{{url_for('edit_entry', password_id=data.id)}}">Edit</button>
         <button type="submit" formaction="{{url_for('get_all_passwords')}}">Back</button>
-        <button type="submit" formaction="{{url_for('show_details', password_id=data.id, token=token, show_link=True)}}" formmethod="post">Share</button>
+        <button type="submit" formaction="{{url_for('show_details', password_id=data.id, token=token, show_link=True)}}"
+                formmethod="post">Share</button>
     </form>
 
     {% if show_link %}
-    <p><a href="{{url_for('share_entry', password_id=data.id, token=token, _external=True)}}">{{url_for('share_entry', password_id=data.id, token=token, _external=True)}}</a></p>
+    <p><a href="{{url_for('share_entry', password_id=data.id, token=token, _external=True)}}">
+        {{url_for('share_entry', password_id=data.id, token=token, _external=True)}}</a></p>
     {% endif %}
 
 </body>

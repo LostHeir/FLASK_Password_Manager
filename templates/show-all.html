@@ -5,6 +5,7 @@
     <title>All passwords</title>
 </head>
 <body>
+
     <table border="1" cellpadding="10">
         <thead>
             <tr>
@@ -23,9 +24,11 @@
             {% endfor %}
         </tbody>
     </table><br>
+
     <form>
          <button type="submit" formaction="{{url_for('add_new_entry')}}">Add new password</button>
         <button type="submit" formaction="{{url_for('home')}}">Log out</button>
     </form>
+
 </body>
 </html>
