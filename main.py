@@ -39,7 +39,7 @@ def generate_auth_token():
     """Generates authentication token using Timed JSON Signature.
      Token is created with None object - there is no need to create any, only time stamp is important.
      Retrun time serialized token."""
-    s = Serializer(app.config['SECRET_KEY'], expires_in=10)
+    s = Serializer(app.config['SECRET_KEY'], expires_in=300)
     token = s.dumps(None)
     return token
 
