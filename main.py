@@ -86,7 +86,7 @@ class Password(db.Model):
     site_name = db.Column(db.String(100), nullable=False)
     site_url = db.Column(db.String(250), nullable=False)
     login = db.Column(db.String(100),  nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(250), nullable=False)  # stored as time stamp - needs to bo longer.
 
     # Create relation to BlogUser table
     author = relationship("PmUser", back_populates="entries")
