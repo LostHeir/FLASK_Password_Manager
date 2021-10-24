@@ -137,7 +137,8 @@ def add_new_entry():
             site_name=data["site"],
             site_url=data["site_url"],
             login=data["login"],
-            password=enc_password
+            password=enc_password,
+            author=current_user
         )
         db.session.add(new_password)
         db.session.commit()
