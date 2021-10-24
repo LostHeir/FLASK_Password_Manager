@@ -94,7 +94,7 @@ class Password(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey("pm_users.id"))
 
 # Run only once to create data base
-# db.create_all()
+db.create_all()
 
 
 # ROUTES
