@@ -1,4 +1,5 @@
 import functools
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
@@ -9,11 +10,11 @@ from itsdangerous import SignatureExpired, TimedJSONWebSignatureSerializer as Se
 
 # I will be using Fernet to encrypt and decrypt password stored in database.
 # Encryption key is needed, I will use Fernet to generate such key, it can be done by using other random key generators.
-key = "SW3HojFnjgC80mLvthtAcKjaELM_qNJkooSYIKK5GxY=".encode()  # key generated with: Fernet.generate_key()
+key = os.environ.get('FERNET_KEY').encode()  # key generated with: Fernet.generate_key()
 fernet = Fernet(key)
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "3TDE1-Kb7t7mCW1xt7-Yh4NF03bobu4TSZAYyo8TxBo"
+app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 # Generated from terminal: python -c "import secrets; print(secrets.token_urlsafe(32))"
 
 # CREATE LOGIN MANAGER - needed for user management.
@@ -144,7 +145,7 @@ def share_entry(token, password_id):
         password_to_show = fernet.decrypt(entry_to_show.password).decode()
         return render_template("share-password.html", data=entry_to_show, password=password_to_show)
     else:
-        flash("Sorry Your URL has expird, ask for new one.")
+        flash("Your URL has expird, ask for new one.")
         return redirect(url_for("home"))
 
 
