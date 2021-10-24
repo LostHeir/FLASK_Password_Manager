@@ -25,13 +25,13 @@ Tools used:
 * As Web App Framework I used _Flask_ - It gives great flexibility to work and I have the most experience with this tool.
 * To communicate with DB I used _SQLAlchemy_, its SQL toolkit and ORM works quite well with Flask.
 * Whole UI is based only on HTML.
-* For now there is only one hardcoded user in DB. (If there is none, first one will be created)
-* The architecture is designed to add multi-user functionality. (Relational databases have been created with user-password_entry links)
+* For now there is only one hardcoded user in DB (if there is none, first one will be created).
+* The architecture is designed to add multi-user functionality (relational databases have been created with user-password_entry links).
 * To store password securely I used _Fernet_ library. It is an implementation of symmetric authenticated cryptograph.
 Fernet encrypts message that cannot be read or altered without the key. It is URL-safe base64-encoded. For a key I used Flask's Secret key.
 * To generate a time-valid link I used _TimedJSONWebSignatureSerializer_ from _itsdangerous_ library.
-It serialize given object (only time-stamp in this case) and then desrialize it and check if time which passed is greater then __expires_in__ parameter.
-When time expires given URL redirect user to the home page with an appropriate message.
+It serializes given object (only time-stamp in this case) and then desrializes it and checks if time passed is greater than the __expires_in__ parameter.
+When time expires, the given URL redirects user to the home page with an appropriate message.
 * App is deployed on Heroku and it's available [here](https://flask-password-manager-mateo.herokuapp.com/).
 
 ## Screenshots
