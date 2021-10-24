@@ -29,8 +29,7 @@ def load_user(user_id):
 
 
 # CREATE DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('POSTGRESQL_DATABASE_URL', 'sqlite:///passwords.db')
-# PostgreSQL DB on Heroku, alternatively use sqllite DB for local development
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///passwords.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -180,8 +179,7 @@ def show_details(token, password_id, show_link):
         return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token,
                                show_link=show_link)
     entry_to_show = Password.query.get(password_id)
-    pass_to_dec = entry_to_show.password.encode()
-    password_to_show = fernet.decrypt(pass_to_dec).decode()
+    password_to_show = fernet.decrypt(entry_to_show.password).decode()
     return render_template("show-details.html", data=entry_to_show, password=password_to_show, token=token)
 
 
