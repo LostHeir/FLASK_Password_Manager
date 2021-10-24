@@ -110,6 +110,8 @@ def home():
             new_user = PmUser(name="User1", password="GreatPassword2*")
             db.session.add(new_user)
             db.session.commit()
+            selected_user = PmUser.query.filter_by(id=1).first()
+            login_user(selected_user)
         passwords = Password.query.all()
         return render_template("show-all.html", all_passwords=passwords)
     return render_template("index.html")
