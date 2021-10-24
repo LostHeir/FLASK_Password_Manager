@@ -22,17 +22,17 @@ Main goals of the project were:
 As an IDE I used Pycharm from JetBrains.
 
 Tools used:
-* As Web App Framework I used __Flask__ - It gives great flexibility to work and I have the most experience with this tool.
-* To communicate with DB I used __SQLAlchemy__, its SQL toolkit and ORM works quite well with Flask.
+* As Web App Framework I used _Flask_ - It gives great flexibility to work and I have the most experience with this tool.
+* To communicate with DB I used _SQLAlchemy_, its SQL toolkit and ORM works quite well with Flask.
 * Whole UI is based only on HTML.
 * For now there is only one hardcoded user in DB. (If there is none, first one will be created)
 * The architecture is designed to add multi-user functionality. (Relational databases have been created with user-password_entry links)
-* To store password securely I used __Fernet__ library. It is an implementation of symmetric authenticated cryptograph.
+* To store password securely I used _Fernet_ library. It is an implementation of symmetric authenticated cryptograph.
 Fernet encrypts message that cannot be read or altered without the key. It is URL-safe base64-encoded. For a key I used Flask's Secret key.
-* To generate a time-valid link I used __TimedJSONWebSignatureSerializer__ from __itsdangerous__ library.
+* To generate a time-valid link I used _TimedJSONWebSignatureSerializer_ from _itsdangerous_ library.
 It serialize given object (only time-stamp in this case) and then desrialize it and check if time which passed is greater then __expires_in__ parameter.
 When time expires given URL redirect user to the home page with an appropriate message.
-* App is deployed on Heroku and it's available [here](https://flask-password-manager-mateo.herokuapp.com/)
+* App is deployed on Heroku and it's available [here](https://flask-password-manager-mateo.herokuapp.com/).
 
 ## Screenshots
 ![Code sample](./Screenshots/data_1.png)
@@ -52,7 +52,8 @@ All techngologies used for this project are included in requirements.txt file.
 
 ## Setup
 You can use the IDE or Terminal to build this project. Below I present the instructions on how to run the program.
-Actuall verion is in __sahre_link__ branch!
+
+Actuall verion is in _share_link_ branch!
 
 1.Clone the repository.
 2.Unzip project.
@@ -64,7 +65,7 @@ Actuall verion is in __sahre_link__ branch!
 
 ## Ideas for further development
 * Add multi-user functionality.
-* Use only __Fernet__ to generate time valid link.
+* Use only _Fernet_ to generate time valid link.
 * Hash and salt password of further users.
 
 ## Status
