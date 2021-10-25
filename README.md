@@ -47,6 +47,8 @@ When time expires, the given URL redirects user to the home page with an appropr
 
 ![Code sample](./Screenshots/data_6.png)
 
+![Code sample](./Screenshots/data_7.png)
+
 ## Technologies
 All techngologies used for this project are included in requirements.txt file.
 
