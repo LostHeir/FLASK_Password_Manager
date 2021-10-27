@@ -59,11 +59,12 @@ def login_required(func):
     """Check if current user is loged in. If not return 403 - Access denied."""
     @functools.wraps(func)
     def decorated_function(*args, **kwargs):
-        if current_user.is_anonymous or current_user.id != 1:
-            return abort(403)
+        if current_user.is_anonymous:
+            return redirect(url_for("home"))
         else:
             return func(*args, **kwargs)
     return decorated_function
+
 
 
 # CREATE TABLES
@@ -149,6 +150,7 @@ def add_new_entry():
 @app.route('/share_entry/<token>/<int:password_id>')
 def share_entry(token, password_id):
     """Displays shared entry details. After time expires redirect user to the home page with notification about this."""
+    logout_user()
     if verify_auth_token(token):
         entry_to_show = Password.query.get(password_id)
         password_to_show = fernet.decrypt(entry_to_show.password).decode()
